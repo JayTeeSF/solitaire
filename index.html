@@ -60,7 +60,7 @@ body {
       const deck = [];
 
       // Initialize tableau as a global variable
-      const tableau = [[], [], [], [], [], [], []];
+      const tableau = []; // [], [], [], [], [], [], []];
 
       // Define the Card class
       class Card {
@@ -129,7 +129,7 @@ body {
         newGame();
       };
 
-      // Function to render the tableau area
+      // Render the tableau area
       function renderTableau(gameBoard) {
         const tableauContainer = document.createElement('div');
         tableauContainer.style.display = 'flex';
@@ -139,6 +139,7 @@ body {
           tableauStack.style.margin = '10px';
 
           tableauContainer.appendChild(tableauStack);
+          tableau.push(tableauStack); // Append the tableau stack to the tableau array
         }
 
         gameBoard.appendChild(tableauContainer);
