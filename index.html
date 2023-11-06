@@ -11,34 +11,34 @@ body {
   padding: 0;
 }
 
-        #game-board {
-          display: inline-block;
-          text-align: left;
-          margin: 10px;
+      #game-board {
+        display: inline-block;
+        text-align: left;
+        margin: 10px;
+      }
+
+      #controls {
+        margin-top: 20px;
+      }
+
+      button {
+        padding: 10px 20px;
+        font-size: 16px;
+      }
+
+      @media screen and (max-width: 600px) {
+        body {
+          font-size: 14px;
         }
 
-        #controls {
-          margin-top: 20px;
+        #game-board {
+          margin: 5px;
         }
 
         button {
-          padding: 10px 20px;
-          font-size: 16px;
+          font-size: 14px;
         }
-
-        @media screen and (max-width: 600px) {
-          body {
-            font-size: 14px;
-          }
-
-          #game-board {
-            margin: 5px;
-          }
-
-          button {
-            font-size: 14px;
-          }
-        }
+      }
     </style>
   </head>
   <body style="font-family: Arial, sans-serif; text-align: center;">
@@ -55,6 +55,45 @@ body {
     <script>
       // JavaScript code for the solitaire game
       // Define data structures and game logic here
+
+      // Initialize deck as a global variable
+      const deck = [];
+
+      // Initialize tableau as a global variable
+      const tableau = [[], [], [], [], [], [], []];
+
+      // Define the Card class
+      class Card {
+        constructor(suit, rank) {
+          this.suit = suit;
+          this.rank = rank;
+          this.flipped = false;
+        }
+
+        // Method to flip the card
+        flip() {
+          this.flipped = !this.flipped;
+        }
+
+        // Method to get the card's representation
+        getRepresentation() {
+          if (this.flipped) {
+            return 'X';
+          } else {
+            return `${this.rank} ${this.suitSymbol}`;
+          }
+        }
+      }
+
+      const CARD_RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+      const SUITS = ['H', 'S', 'C', 'D'];
+
+      const suitSymbol = {
+        "H": "♥",
+        "S": "♠",
+        "C": "♣",
+        "D": "♦"
+      };
 
       // Initialize gameBoard as a global variable
       const gameBoard = document.getElementById('game-board');
@@ -82,7 +121,7 @@ body {
 
       // Initialize the game when the page loads
       window.onload = () => {
-          // Render the tableau and foundations areas
+        // Render the tableau and foundations areas
         renderTableau(gameBoard);
         renderFoundations(gameBoard);
 
@@ -122,50 +161,69 @@ body {
       }
 
       // Function to create a card representation
-      function createCard(suit, rank) {
-        const card = document.createElement('div');
-        card.style.width = '60px';
-        card.style.height = '80px';
-        card.style.border = '1px solid #000';
-        card.style.textAlign = 'center';
-        card.style.fontSize = '20px';
-        card.style.background = 'white';
-        card.style.position = 'relative';
-        card.textContent = `${rank} ${suit}`;
+      function createCard(card) { // suit, rank) {
+        const cardElement = document.createElement('div');
+        cardElement.style.width = '60px';
+        cardElement.style.height = '80px';
+        cardElement.style.border = '1px solid #000';
+        cardElement.style.textAlign = 'center';
+        cardElement.style.fontSize = '20px';
+        cardElement.style.background = 'white';
+        cardElement.style.position = 'relative';
+        cardElement.textContent = card.getRepresentation();
 
-        return card;
+        return cardElement;
       }
-
-      const CARD_RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-      const SUITS = ['H', 'S', 'C', 'D'];
-
-      const suitSymbol = {
-        "H": "♥",
-        "S": "♠",
-        "C": "♣",
-        "D": "♦"
-      };
 
       // Function to create a new game
       function newGame() {
-          // Deal cards to the tableau with animation
+        // Create a new deck
+        createDeck();
+
+        // Shuffle the deck
+        shuffleDeck();
+
+        // Deal cards to the tableau with animation
         dealCardsWithAnimation(tableau, deck, gameBoard);
-
-        /*
-        // Clear the game board
-        gameBoard.innerHTML = '';
-
-        // Create and display stacks, cards, and suits using createCard function
-        // You can add cards to the game board here
-        // For example:
-        const card1 = createCard(suitSymbol["H"], 'A');
-        gameBoard.appendChild(card1);
-        // ...
-        // Implement game logic for card movements and checking for wins
-        */
 
         // Update the game board to reflect the new game state
         updateGameBoard();
+      }
+
+      // Function to create a new deck
+      function createDeck() {
+        for (let suit of SUITS) {
+          for (let rank of CARD_RANKS) {
+            deck.push(new Card(suit, rank));
+          }
+        }
+      }
+
+      Array.prototype.dealCard = function() {
+        if (this.length > 0) {
+          return this.pop();
+        } else {
+          throw new Error('Deck is empty');
+        }
+      };
+
+      // Function to shuffle the deck
+      function shuffleDeck() {
+        for (let i = deck.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [deck[i], deck[j]] = [deck[j], deck[i]];
+        }
+      }
+
+      // Function to deal cards to the tableau
+      function dealCardsToTableau() {
+        for (let i = 0; i < tableau.length; i++) {
+          for (let j = 0; j <= i; j++) {
+            const card = deck.dealCard();
+            tableau[i].push(card);
+          }
+          tableau[i][tableau[i].length - 1].flip();
+        }
       }
 
       // Function to deal cards to the tableau with animation
@@ -176,7 +234,7 @@ body {
             card.flip();
             tableau[i].push(card);
 
-            const cardElement = createCard(card.suit, card.rank);
+            const cardElement = createCard(card); //card.suit, card.rank);
             cardElement.style.opacity = 0;
 
             tableau[i].appendChild(cardElement);
