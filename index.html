@@ -1,136 +1,216 @@
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solitaire Game</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-        }
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
 
         #game-board {
-            display: inline-block;
-            text-align: left;
-            margin: 10px;
+          display: inline-block;
+          text-align: left;
+          margin: 10px;
         }
 
         #controls {
-            margin-top: 20px;
+          margin-top: 20px;
         }
 
         button {
-            padding: 10px 20px;
-            font-size: 16px;
+          padding: 10px 20px;
+          font-size: 16px;
         }
 
         @media screen and (max-width: 600px) {
-            body {
-                font-size: 14px;
-            }
+          body {
+            font-size: 14px;
+          }
 
-            #game-board {
-                margin: 5px;
-            }
+          #game-board {
+            margin: 5px;
+          }
 
-            button {
-                font-size: 14px;
-            }
+          button {
+            font-size: 14px;
+          }
         }
     </style>
-</head>
-<body style="font-family: Arial, sans-serif; text-align: center;">
- 
+  </head>
+  <body style="font-family: Arial, sans-serif; text-align: center;">
+
     <div id="game-board" style="display: inline-block; text-align: left; margin: 10px;">
-         <!-- Stacks, cards, and suits will be dynamically generated using inline JavaScript -->
+      <!-- Stacks, cards, and suits will be dynamically generated using inline JavaScript -->
     </div>
     <div id="controls" style="margin-top: 20px;">
-        <button id="new-game" style="padding: 10px 20px; font-size: 16px;">New Game</button>
-        <button id="hint" style="padding: 10px 20px; font-size: 16px;">Hint</button>
-        <button id="reset-deck" style="padding: 10px 20px; font-size: 16px;">Reset Deck</button>
+      <button id="new-game" style="padding: 10px 20px; font-size: 16px;">New Game</button>
+      <button id="hint" style="padding: 10px 20px; font-size: 16px;">Hint</button>
+      <button id="reset-deck" style="padding: 10px 20px; font-size: 16px;">Reset Deck</button>
     </div>
 
     <script>
-        // JavaScript code for the solitaire game
-        // Define data structures and game logic here
+      // JavaScript code for the solitaire game
+      // Define data structures and game logic here
 
-        // Initialize gameBoard as a global variable
-        const gameBoard = document.getElementById('game-board');
+      // Initialize gameBoard as a global variable
+      const gameBoard = document.getElementById('game-board');
 
-        // Event listeners for card movement and game controls
-        document.getElementById('new-game').addEventListener('click', newGame);
+      // Event listeners for card movement and game controls
+      document.getElementById('new-game').addEventListener('click', newGame);
 
-        function provideHint() {
-            // Implement logic to provide hints to the player
+      function provideHint() {
+        // Implement logic to provide hints to the player
+      }
+
+      document.getElementById('hint').addEventListener('click', provideHint);
+
+      function resetDeck() {
+        // Implement logic to reset the deck
+      }
+
+      document.getElementById('reset-deck').addEventListener('click', resetDeck);
+
+      // Function to update the game board based on the game state
+      function updateGameBoard() {
+        // Update the HTML elements to reflect the game state
+        // Dynamically generate stacks, cards, and suits
+      }
+
+      // Initialize the game when the page loads
+      window.onload = () => {
+        // Call newGame to start a new game when the page loads
+        newGame();
+      };
+
+
+      // Function to create a card representation
+      function createCard(suit, rank) {
+        const card = document.createElement('div');
+        card.style.width = '60px';
+        card.style.height = '80px';
+        card.style.border = '1px solid #000';
+        card.style.textAlign = 'center';
+        card.style.fontSize = '20px';
+        card.style.background = 'white';
+        card.style.position = 'relative';
+        card.textContent = `${rank} ${suit}`;
+
+        return card;
+      }
+
+      // Shuffle an array using the Fisher-Yates algorithm
+      function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
         }
+      }
 
-        document.getElementById('hint').addEventListener('click', provideHint);
+      const CARD_RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+      const SUITS = ['H', 'S', 'C', 'D'];
 
-        function resetDeck() {
-            // Implement logic to reset the deck
-        }
+      const suitSymbol = {
+        "H": "♥",
+        "S": "♠",
+        "C": "♣",
+        "D": "♦"
+      };
 
-        document.getElementById('reset-deck').addEventListener('click', resetDeck);
+      // Function to create a new game
+      function newGame() {
+        // Clear the game board
+        gameBoard.innerHTML = '';
 
-        // Function to update the game board based on the game state
-        function updateGameBoard() {
-          // Update the HTML elements to reflect the game state
-          // Dynamically generate stacks, cards, and suits
-        }
+        // Create and display stacks, cards, and suits using createCard function
+        // You can add cards to the game board here
+        // For example:
+        const card1 = createCard(suitSymbol["H"], 'A');
+        gameBoard.appendChild(card1);
+        // ...
 
-        // Initialize the game when the page loads
-        window.onload = () => {
-          // Call newGame to start a new game when the page loads
-          newGame();
-        };
+        // Implement game logic for card movements and checking for wins
+        updateGameBoard()
+      }
+      function dealCardsToTableau(tableau, deck) {
 
 
-        // Function to create a card representation
-        function createCard(suit, rank) {
-            const card = document.createElement('div');
-            card.style.width = '60px';
-            card.style.height = '80px';
-            card.style.border = '1px solid #000';
-            card.style.textAlign = 'center';
-            card.style.fontSize = '20px';
-            card.style.background = 'white';
-            card.style.position = 'relative';
-            card.textContent = `${rank} ${suit}`;
-
-            return card;
-        }
-
-        // Shuffle an array using the Fisher-Yates algorithm
-        function shuffle(array) {
-          for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+        for (let i = 0; i < tableau.length; i++) {
+          for (let j = 0; j <= i; j++) {
+            const card = deck.dealCard();
+            card.flip();
+            tableau[i].push(card);
           }
+          tableau[i][tableau[i].length - 1].flip();
+        }
+      }
+
+      function
+
+      isValidMoveTableauToTableau(sourceStack, destinationStack) {
+        if (sourceStack === destinationStack) {
+          return
+
+          false;
         }
 
-        const suitSymbol = {
-          "H": "♥",
-          "S": "♠",
-          "C": "♣",
-          "D": "♦"
-        };
-
-        // Function to create a new game
-        function newGame() {
-            // Clear the game board
-            gameBoard.innerHTML = '';
-
-            // Create and display stacks, cards, and suits using createCard function
-            // You can add cards to the game board here
-            // For example:
-            const card1 = createCard(suitSymbol["H"], 'A');
-            gameBoard.appendChild(card1);
-            // ...
-
-            // Implement game logic for card movements and checking for wins
+        if (destinationStack.length === 0) {
+          return sourceStack[sourceStack.length - 1].rank === 'K';
         }
+
+        const sourceCard = sourceStack[sourceStack.length - 1];
+        const destinationCard = destinationStack[destinationStack.length - 1];
+
+        return (
+          sourceCard.suit !== destinationCard.suit &&
+          CARD_RANKS.indexOf(sourceCard.rank) === CARD_RANKS.indexOf(destinationCard.rank) - 1
+        );
+      }
+
+      function
+
+      isValidMoveTableauToFoundations(card, foundations) {
+        const stack = foundations[SUITS.indexOf(card.suit)];
+        if (stack.length === 0) {
+          return card.rank === 'A';
+        }
+
+        const topCard = stack[stack.length - 1];
+        return CARD_RANKS.indexOf(card.rank) === CARD_RANKS.indexOf(topCard.rank) + 1;
+      }
+
+      function
+
+      moveCard(sourceStack, destinationStack) {
+        if (isValidMoveTableauToTableau(sourceStack, destinationStack)) {
+          destinationStack.push(sourceStack.pop());
+        } else
+
+          if (isValidMoveTableauToFoundations(sourceStack[sourceStack.length - 1], foundations)) {
+            foundations[SUITS.indexOf(sourceStack[sourceStack.length - 1].suit)].push(sourceStack.pop());
+          }
+      }
+
+      // Initialize deck, tableau, and foundations
+
+      const deck = [];
+      for (let suit of SUITS) {
+        for (let rank of CARD_RANKS) {
+          deck.push(new Card(suit, rank));
+        }
+      }
+      shuffle(deck);
+
+      const tableau = [[], [], [], [], [], [], []];
+      dealCardsToTableau(tableau, deck);
+
+      const foundations = [[], [], [], []];
+
+      // Update the game board
+      updateGameBoard();
     </script>
-</body>
+  </body>
 </html>
