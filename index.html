@@ -1,24 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Solitaire Game</title>
-</head>
-<body style="font-family: Arial, sans-serif; text-align: center;">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
 
-    <div id="game-board" style="display: inline-block; text-align: left; margin: 10px;">
+        #game-board {
+            display: inline-block;
+            text-align: left;
+            margin: 10px;
+        }
+
+        #controls {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+        }
+
+        @media screen and (max-width: 600px) {
+            body {
+                font-size: 14px;
+            }
+
+            #game-board {
+                margin: 5px;
+            }
+
+            button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="game-board">
         <!-- Stacks, cards, and suits will be dynamically generated using inline JavaScript -->
     </div>
-    <div id="controls" style="margin-top: 20px;">
-        <button id="new-game" style="padding: 10px 20px; font-size: 16px;">New Game</button>
-        <button id="hint" style="padding: 10px 20px; font-size: 16px;">Hint</button>
-        <button id="reset-deck" style="padding: 10px 20px; font-size: 16px;">Reset Deck</button>
+    <div id="controls">
+        <button id="new-game">New Game</button>
+        <button id="hint">Hint</button>
+        <button id="reset-deck">Reset Deck</button>
     </div>
 
     <script>
         // JavaScript code for the solitaire game
-        let gameBoard = document.getElementById('game-board');
+        // Define data structures and game logic here
 
-        // Function to generate a card representation
+        // Event listeners for card movement and game controls
+        document.getElementById('new-game').addEventListener('click', newGame);
+
+        function provideHint() {
+            // Implement logic to provide hints to the player
+        }
+
+        document.getElementById('hint').addEventListener('click', provideHint);
+
+        function resetDeck() {
+            // Implement logic to reset the deck
+        }
+
+        document.getElementById('reset-deck').addEventListener('click', resetDeck);
+
+        // Call newGame to start a new game when the page loads
+        newGame();
+
+        // Function to create a card representation
         function createCard(suit, rank) {
             const card = document.createElement('div');
             card.style.width = '60px';
@@ -47,24 +103,6 @@
 
             // Implement game logic for card movements and checking for wins
         }
-
-        // Event listeners for game controls
-        document.getElementById('new-game').addEventListener('click', newGame);
-
-        function provideHint() {
-            // Implement logic to provide hints to the player
-        }
-
-        document.getElementById('hint').addEventListener('click', provideHint);
-
-        function resetDeck() {
-            // Implement logic to reset the deck
-        }
-
-        document.getElementById('reset-deck').addEventListener('click', resetDeck);
-
-        // Call newGame to start a new game when the page loads
-        newGame();
     </script>
 </body>
 </html>
