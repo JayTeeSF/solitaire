@@ -59,8 +59,9 @@ body {
       // Initialize deck as a global variable
       const deck = [];
 
-      // Initialize tableau as a global variable
-      const tableau = []; // [], [], [], [], [], [], []];
+      // Initialize tableau as an array of empty arrays
+      const tableau = [[], [], [], [], [], [], []];
+
 
       // Define the Card class
       class Card {
@@ -139,7 +140,8 @@ body {
           tableauStack.style.margin = '10px';
 
           tableauContainer.appendChild(tableauStack);
-          tableau.push(tableauStack); // Append the tableau stack to the tableau array
+          // tableau.push(tableauStack); // Append the tableau stack to the tableau array
+          tableau[i] = tableauStack; // Assign the tableau stack directly to the corresponding sub-array
         }
 
         gameBoard.appendChild(tableauContainer);
