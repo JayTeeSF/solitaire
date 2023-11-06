@@ -112,10 +112,25 @@ body {
       document.getElementById('reset-deck').addEventListener('click', resetDeck);
 
       // Function to update the game board based on the game state
-      function updateGameBoard() {
+      function updateGameBoard(tableau) {
         // Update the HTML elements to reflect the game state
         // Dynamically generate stacks, cards, and suits
-        return tableau;
+          // Clear the existing card elements from the tableau stacks
+        for (let i = 0; i < tableau.length; i++) {
+          while (tableau[i].firstChild) {
+            tableau[i].removeChild(tableau[i].firstChild);
+          }
+        }
+
+        // Add card elements for the remaining cards in each stack
+        for (let i = 0; i < tableau.length; i++) {
+          for (let j = tableau[i].length - 1; j >= 0; j--) {
+            const card = tableau[i][j];
+            const cardElement = createCard(card);
+
+            tableau[i].appendChild(cardElement);
+          }
+        }
       }
 
       // Initialize the game when the page loads
