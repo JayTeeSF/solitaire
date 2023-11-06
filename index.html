@@ -74,8 +74,18 @@
 
         document.getElementById('reset-deck').addEventListener('click', resetDeck);
 
-        // Call newGame to start a new game when the page loads
-        newGame();
+        // Function to update the game board based on the game state
+        function updateGameBoard() {
+          // Update the HTML elements to reflect the game state
+          // Dynamically generate stacks, cards, and suits
+        }
+
+        // Initialize the game when the page loads
+        window.onload = () => {
+          // Call newGame to start a new game when the page loads
+          newGame();
+        };
+
 
         // Function to create a card representation
         function createCard(suit, rank) {
@@ -92,6 +102,21 @@
             return card;
         }
 
+        // Shuffle an array using the Fisher-Yates algorithm
+        function shuffle(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+          }
+        }
+
+        const suitSymbol = {
+          "H": "♥",
+          "S": "♠",
+          "C": "♣",
+          "D": "♦"
+        };
+
         // Function to create a new game
         function newGame() {
             // Clear the game board
@@ -100,7 +125,7 @@
             // Create and display stacks, cards, and suits using createCard function
             // You can add cards to the game board here
             // For example:
-            const card1 = createCard('♥', 'A');
+            const card1 = createCard(suitSymbol["H"], 'A');
             gameBoard.appendChild(card1);
             // ...
 
