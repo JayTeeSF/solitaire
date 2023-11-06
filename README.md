@@ -44,4 +44,15 @@ Testing and Debugging:
 Test the game thoroughly to ensure all rules are followed and animations work as expected.
 Use browser developer tools for debugging.
 
-Docs: tbd
+
+Docs:
+
+Tableau:
+
+The tableau is the main playing area of the solitaire game, where the majority of the cards are initially dealt and manipulated. It consists of seven tableau stacks, each with cards partially visible and overlapping.
+
+
+Foundations:
+
+The foundations are four designated areas located above the tableau, where cards are ultimately built up in ascending order by suit, from Ace to King. Successfully building all cards onto the foundations signifies a win in solitaire.
+

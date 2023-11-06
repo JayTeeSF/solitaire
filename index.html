@@ -82,10 +82,44 @@ body {
 
       // Initialize the game when the page loads
       window.onload = () => {
-        // Call newGame to start a new game when the page loads
+          // Render the tableau and foundations areas
+        renderTableau(gameBoard);
+        renderFoundations(gameBoard);
+
+        // Call newGame to start a new game
         newGame();
       };
 
+      // Function to render the tableau area
+      function renderTableau(gameBoard) {
+        const tableauContainer = document.createElement('div');
+        tableauContainer.style.display = 'flex';
+
+        for (let i = 0; i < 7; i++) {
+          const tableauStack = document.createElement('div');
+          tableauStack.style.margin = '10px';
+
+          tableauContainer.appendChild(tableauStack);
+        }
+
+        gameBoard.appendChild(tableauContainer);
+      }
+
+      // Function to render the foundations area
+      function renderFoundations(gameBoard) {
+        const foundationsContainer = document.createElement('div');
+        foundationsContainer.style.display = 'flex';
+        foundationsContainer.style.justifyContent = 'space-around';
+
+        for (let i = 0; i < 4; i++) {
+          const foundationStack = document.createElement('div');
+          foundationStack.style.margin = '10px';
+
+          foundationsContainer.appendChild(foundationStack);
+        }
+
+        gameBoard.appendChild(foundationsContainer);
+      }
 
       // Function to create a card representation
       function createCard(suit, rank) {
@@ -102,14 +136,6 @@ body {
         return card;
       }
 
-      // Shuffle an array using the Fisher-Yates algorithm
-      function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [array[i], array[j]] = [array[j], array[i]];
-        }
-      }
-
       const CARD_RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
       const SUITS = ['H', 'S', 'C', 'D'];
 
@@ -122,6 +148,10 @@ body {
 
       // Function to create a new game
       function newGame() {
+          // Deal cards to the tableau with animation
+        dealCardsWithAnimation(tableau, deck, gameBoard);
+
+        /*
         // Clear the game board
         gameBoard.innerHTML = '';
 
@@ -131,26 +161,36 @@ body {
         const card1 = createCard(suitSymbol["H"], 'A');
         gameBoard.appendChild(card1);
         // ...
-
         // Implement game logic for card movements and checking for wins
-        updateGameBoard()
+        */
+
+        // Update the game board to reflect the new game state
+        updateGameBoard();
       }
-      function dealCardsToTableau(tableau, deck) {
 
-
+      // Function to deal cards to the tableau with animation
+      function dealCardsWithAnimation(tableau, deck, gameBoard) {
         for (let i = 0; i < tableau.length; i++) {
           for (let j = 0; j <= i; j++) {
             const card = deck.dealCard();
             card.flip();
             tableau[i].push(card);
+
+            const cardElement = createCard(card.suit, card.rank);
+            cardElement.style.opacity = 0;
+
+            tableau[i].appendChild(cardElement);
+
+            setTimeout(() => {
+              cardElement.style.opacity = 1;
+            }, 500 * j);
           }
+
           tableau[i][tableau[i].length - 1].flip();
         }
       }
 
-      function
-
-      isValidMoveTableauToTableau(sourceStack, destinationStack) {
+      function isValidMoveTableauToTableau(sourceStack, destinationStack) {
         if (sourceStack === destinationStack) {
           return
 
@@ -170,9 +210,7 @@ body {
         );
       }
 
-      function
-
-      isValidMoveTableauToFoundations(card, foundations) {
+      function isValidMoveTableauToFoundations(card, foundations) {
         const stack = foundations[SUITS.indexOf(card.suit)];
         if (stack.length === 0) {
           return card.rank === 'A';
@@ -182,9 +220,7 @@ body {
         return CARD_RANKS.indexOf(card.rank) === CARD_RANKS.indexOf(topCard.rank) + 1;
       }
 
-      function
-
-      moveCard(sourceStack, destinationStack) {
+      function moveCard(sourceStack, destinationStack) {
         if (isValidMoveTableauToTableau(sourceStack, destinationStack)) {
           destinationStack.push(sourceStack.pop());
         } else
@@ -193,24 +229,6 @@ body {
             foundations[SUITS.indexOf(sourceStack[sourceStack.length - 1].suit)].push(sourceStack.pop());
           }
       }
-
-      // Initialize deck, tableau, and foundations
-
-      const deck = [];
-      for (let suit of SUITS) {
-        for (let rank of CARD_RANKS) {
-          deck.push(new Card(suit, rank));
-        }
-      }
-      shuffle(deck);
-
-      const tableau = [[], [], [], [], [], [], []];
-      dealCardsToTableau(tableau, deck);
-
-      const foundations = [[], [], [], []];
-
-      // Update the game board
-      updateGameBoard();
     </script>
   </body>
 </html>
