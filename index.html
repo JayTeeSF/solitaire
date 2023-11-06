@@ -61,6 +61,10 @@ body {
 
       // Initialize tableau as an array of empty arrays
       const tableau = [[], [], [], [], [], [], []];
+      /*
+      // Initialize tableau as an empty array
+      // const tableau = [];
+      */
 
 
       // Define the Card class
@@ -71,6 +75,21 @@ body {
           this.flipped = false;
         }
 
+        // Function to create a card representation
+        createCardElement() { // suit, rank) {
+          const cardElement = document.createElement('div');
+          cardElement.style.width = '60px';
+          cardElement.style.height = '80px';
+          cardElement.style.border = '1px solid #000';
+          cardElement.style.textAlign = 'center';
+          cardElement.style.fontSize = '20px';
+          cardElement.style.background = 'white';
+          cardElement.style.position = 'relative';
+          cardElement.textContent = this.getRepresentation();
+
+          return cardElement;
+        }
+
         // Method to flip the card
         flip() {
           this.flipped = !this.flipped;
@@ -79,9 +98,9 @@ body {
         // Method to get the card's representation
         getRepresentation() {
           if (this.flipped) {
-            return 'X';
+            return 'Back';
           } else {
-            return `${this.rank} ${this.suitSymbol}`;
+            return `${this.rank} ${suitSymbol[this.suit]}`;
           }
         }
       }
@@ -129,9 +148,10 @@ body {
         for (let i = 0; i < tableau.length; i++) {
           for (let j = tableau[i].length - 1; j >= 0; j--) {
             const card = tableau[i][j];
-            const cardElement = createCard(card);
+            // const cardElement = createCard(card);
 
-            tableau[i].appendChild(cardElement);
+            // tableau[i].appendChild(cardElement);
+            tableau[i][0].appendChild(card);
           }
         }
       }
@@ -157,11 +177,17 @@ body {
           tableauStack.style.margin = '10px';
 
           tableauContainer.appendChild(tableauStack);
-          tableau[i].push(tableauStack); // Append the tableau stack to the tableau array
-          //tableau[i] = tableauStack; // Assign the tableau stack directly to the corresponding sub-array
+          tableau[i].push(tableauStack); // Append to both display and array
+          /*
+            // tableau[i] = tableauStack; // Assign the tableau stack directly to the corresponding sub-array
+
+            // tableau[i].push(tableauStack); // Append the tableau stack to the tableau array
+            //tableau[i] = tableauStack; // Assign the tableau stack directly to the corresponding sub-array
+           */
         }
 
-        gameBoard.appendChild(tableauContainer);
+        // Only append container once
+        gameBoard.appendChild(tableauContainer); 
       }
 
       // Function to render the foundations area
@@ -178,21 +204,6 @@ body {
         }
 
         gameBoard.appendChild(foundationsContainer);
-      }
-
-      // Function to create a card representation
-      function createCard(card) { // suit, rank) {
-        const cardElement = document.createElement('div');
-        cardElement.style.width = '60px';
-        cardElement.style.height = '80px';
-        cardElement.style.border = '1px solid #000';
-        cardElement.style.textAlign = 'center';
-        cardElement.style.fontSize = '20px';
-        cardElement.style.background = 'white';
-        cardElement.style.position = 'relative';
-        cardElement.textContent = card.getRepresentation();
-
-        return cardElement;
       }
 
       // Function to create a new game
@@ -235,29 +246,21 @@ body {
         }
       }
 
-      // Function to deal cards to the tableau
-      function dealCardsToTableau() {
-        for (let i = 0; i < tableau.length; i++) {
-          for (let j = 0; j <= i; j++) {
-            const card = deck.dealCard();
-            tableau[i].push(card);
-          }
-          tableau[i][tableau[i].length - 1].flip();
-        }
-      }
-
       // Function to deal cards to the tableau with animation
       function dealCardsWithAnimation(tableau, deck, gameBoard) {
         for (let i = 0; i < tableau.length; i++) {
           for (let j = 0; j <= i; j++) {
             const card = deck.dealCard();
             card.flip();
+
+            // Add card to appropriate tableau array
             tableau[i].push(card);
 
-            const cardElement = createCard(card); //card.suit, card.rank);
+            const cardElement = card.createCardElement();
             cardElement.style.opacity = 0;
 
-            tableau[i].appendChild(cardElement);
+            // Append to first element in tableau array 
+            tableau[i][0].appendChild(cardElement);
 
             setTimeout(() => {
               cardElement.style.opacity = 1;
