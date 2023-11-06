@@ -59,6 +59,9 @@ body {
       // Initialize deck as a global variable
       const deck = [];
 
+      // Initialize tableau as an array of empty arrays
+      const tableau = [[], [], [], [], [], [], []];
+
 
       // Define the Card class
       class Card {
@@ -112,7 +115,7 @@ body {
       document.getElementById('reset-deck').addEventListener('click', resetDeck);
 
       // Function to update the game board based on the game state
-      function updateGameBoard(tableau) {
+      function updateGameBoard() {
         // Update the HTML elements to reflect the game state
         // Dynamically generate stacks, cards, and suits
           // Clear the existing card elements from the tableau stacks
@@ -135,11 +138,8 @@ body {
 
       // Initialize the game when the page loads
       window.onload = () => {
-        // Declare a global variable to hold the tableau array
-        let tableau;
-
         // Call renderTableau and assign the returned value to the global variable
-        tableau = renderTableau(gameBoard);
+        renderTableau(gameBoard);
         // and foundations areas
         renderFoundations(gameBoard);
 
@@ -152,9 +152,6 @@ body {
         const tableauContainer = document.createElement('div');
         tableauContainer.style.display = 'flex';
 
-        // Initialize tableau as an array of empty arrays
-        const tableau = [[], [], [], [], [], [], []];
-
         for (let i = 0; i < 7; i++) {
           const tableauStack = document.createElement('div');
           tableauStack.style.margin = '10px';
@@ -165,7 +162,6 @@ body {
         }
 
         gameBoard.appendChild(tableauContainer);
-        return tableau;
       }
 
       // Function to render the foundations area
@@ -211,7 +207,7 @@ body {
         dealCardsWithAnimation(tableau, deck, gameBoard);
 
         // Update the game board to reflect the new game state
-        updateGameBoard(tableau);
+        updateGameBoard();
       }
 
       // Function to create a new deck
