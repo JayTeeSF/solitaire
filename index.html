@@ -11,60 +11,60 @@
       }
       #game-area {
         display: grid;
-        grid-template-areas: 
+        grid-template-areas:
           "final dealt deck"
           "seven seven seven";
         grid-template-columns: 1fr auto 1fr;
         grid-template-rows: auto 1fr;
         gap: 5%;
       }
-      
+
       #final-stacks {
         grid-area: final;
       }
-      
+
       #dealt-cards {
         grid-area: dealt;
       }
-      
+
       #deck {
-        grid-area: deck;  
+        grid-area: deck;
       }
-     
+
       #tableau {
         display: grid;
         grid-template-columns: repeat(7, 1fr);
         gap: 0%;
       }
- 
+
       .card {
         box-shadow: -5px 5px 5px rgba(0,0,0,0.3);
         background-color: white;
         width: 50px;
         height: 70px;
         border: 1px solid #888;
-        border-radius: 10px;  
+        border-radius: 10px;
         font-size: 16px;
-        font-weight: bold; 
+        font-weight: bold;
       }
 
       .card:first-child {
-        transform: none; 
+        transform: none;
       }
 
       .card:nth-child(2) {
         transform: translate(0, -80%);
-        transition: transform 0.2s ease; 
+        transition: transform 0.2s ease;
       }
 
       .card:nth-child(3) {
         transform: translate(0, -160%);
-        transition: transform 0.2s ease; 
+        transition: transform 0.2s ease;
       }
 
       .card:nth-child(4) {
         transform: translate(0, -240%);
-        transition: transform 0.2s ease; 
+        transition: transform 0.2s ease;
       }
 
       .card:nth-child(5) {
@@ -86,18 +86,18 @@
         background-color: lightblue;
         border: 1px solid white;
       }
-    
+
       .rank {
         position: relative;
         bottom: 0;
-        left: 5%; 
+        left: 5%;
       }
 
       .suit {
         position: relative;
         bottom: 0;
         right: -30%;
-      } 
+      }
 
       .double-suit {
         font-size: 30px;
@@ -109,15 +109,15 @@
       .red {
         color: red;
       }
-      
+
       .black {
         color: black;
       }
-     
+
       @media (max-width: 500px) {
         #game-area {
           grid-template-columns: 1fr;
-          grid-template-areas:  
+          grid-template-areas:
             "final"
             "dealt"
             "deck"
@@ -143,20 +143,20 @@
       <button id="new-game">New Game</button>
       <button id="hint">Hint</button>
       <button id="save">Save Game</button>
-    </div>  
+    </div>
 
     <div id="game-area">
 
       <div id="final-stacks">
 
-        <div id="stack-H"></div>  
-        <div id="stack-S"></div>
-        <div id="stack-C"></div>
-        <div id="stack-D"></div>
+        <div id="stack-H">H</div>
+        <div id="stack-S">S</div>
+        <div id="stack-C">C</div>
+        <div id="stack-D">D</div>
 
       </div>
 
-      <div id="dealt-cards"></div>
+      <div id="dealt-cards">.</div>
 
       <div id="deck">
         <div class="card card-back"></div>
@@ -164,10 +164,10 @@
 
       <div id="tableau">
 
-        <div id="tableau1"></div>  
+        <div id="tableau1"></div>
         <div id="tableau2"></div>
         <div id="tableau3"></div>
-        <div id="tableau4"></div>  
+        <div id="tableau4"></div>
         <div id="tableau5"></div>
         <div id="tableau6"></div>
         <div id="tableau7"></div>
@@ -189,7 +189,7 @@
         "H": [],
         "S": [],
         "C": [],
-        "D": []  
+        "D": []
       };
 
       // DOM elements
@@ -207,7 +207,7 @@
         document.getElementById("tableau2"),
         document.getElementById("tableau3"),
         document.getElementById("tableau4"),
-        document.getElementById("tableau5"),  
+        document.getElementById("tableau5"),
         document.getElementById("tableau6"),
         document.getElementById("tableau7")
       ];
@@ -218,14 +218,14 @@
         "H": "♥",
         "D": "♦",
         "C": "♣",
-        "S": "♠" 
+        "S": "♠"
       };
 
       const colors = {
         "H": "red",
         "D": "red",
         "C": "black",
-        "S": "black"  
+        "S": "black"
       };
 
       const ranks = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
@@ -239,7 +239,7 @@
 
         for (let suit of Object.keys(suits)) {
           // Create stack div for this suit
-          let stack = document.createElement("div"); 
+          let stack = document.createElement("div");
           stack.classList.add("foundation");
           stack.dataset.suit = suit;
 
@@ -260,14 +260,14 @@
         // alert("in updateGameBoard()...");
         // Clear existing cards
         for (let stack of tableauElements) {
-          clearElement(stack); 
+          clearElement(stack);
         }
 
         clearElement(deckElement);
 
         // Render deck
-        if (deck.length === 0) {  
-          deckElement.textContent = "Empty"; 
+        if (deck.length === 0) {
+          deckElement.textContent = "Empty";
         }
         else {
           //renderCard(deck[0]));
@@ -279,7 +279,7 @@
           card.draggable = true;
 
           card.addEventListener('dragstart', e => {
-            e.dataTransfer.setData('text/plain', card.dataset.cardId); 
+            e.dataTransfer.setData('text/plain', card.dataset.cardId);
           });
         }
 
@@ -291,14 +291,13 @@
 
           // Render last card face up
           let lastIndex = cards.length - 1;
-          // if (!lastIndex) alert(`updateGameBoard() tableau: cards lastIndex ${lastIndex}`);
 
             // Render other cards face down
           for (let j = 0; j < lastIndex; j++) {
               // Add normal cards
-              stack.appendChild(renderBack(cards[j])); 
+              stack.appendChild(renderBack(cards[j]));
           }
-          stack.appendChild(renderCard(cards[lastIndex]));  
+          stack.appendChild(renderCard(cards[lastIndex]));
         }
 
         // Render foundations
@@ -327,7 +326,6 @@
             stack.appendChild(card);
           });
         }
-        // alert("done updateGameBoard().");
       }
 
       function newGame() {
@@ -351,7 +349,7 @@
           tableau: tableau,
           foundations: foundations,
           dealtCards: dealtCards,
-    
+
           suits: suits,
           ranks: ranks,
 
@@ -379,7 +377,7 @@
           tableau = savedState.tableau;
           foundations = savedState.foundations;
           dealtCards: savedState.dealtCards;
-    
+
           suits: savedState.suits;
           ranks: savedState.ranks;
           // Load other state
@@ -398,7 +396,7 @@
       }
 
       // Shuffle deck
-      function shuffleDeck() {
+      function shuffleDeck(deck) {
         // Fisher-Yates shuffle
         for (let i = deck.length - 1; i > 0; i--) {
           let j = Math.floor(Math.random() * (i + 1));
@@ -407,7 +405,7 @@
       }
 
       // Deal cards to tableau
-      function dealCards() {
+      function dealCards(deck, tableau) {
         for (let i = 0; i < tableau.length; i++) {
           for (let j = 0; j <= i; j++) {
             let card = deck.shift();
@@ -423,10 +421,10 @@
         tableau = [[], [], [], [], [], [], []];
         foundations = {
           "H": [],
-          "S": [], 
+          "S": [],
           "C": [],
           "D": []
-        }; 
+        };
       }
 
       // Position cards
@@ -446,7 +444,7 @@
 
           // Alternate left/right
           if (i % 2 == 0) {
-            x += stagger; 
+            x += stagger;
           } else {
             x -= stagger;
           }
@@ -465,7 +463,7 @@
         // Add to destination
         dest.push(card);
 
-        // Reposition 
+        // Reposition
         stackCards(source);
         stackCards(dest);
       }
@@ -485,22 +483,22 @@
         element.classList.add("card");
 
         // const topLine = document.createElement('span');
-        // element.innerHTML = `&nbsp;${card.rank}&nbsp;&nbsp;&nbsp;${suits[card.suit]}`; 
+        // element.innerHTML = `&nbsp;${card.rank}&nbsp;&nbsp;&nbsp;${suits[card.suit]}`;
         const rank = document.createElement('span');
-        rank.classList.add('rank'); 
+        rank.classList.add('rank');
         rank.textContent = card.rank;
         element.appendChild(rank);
         // topLine.appendChild(rank);
 
         const suit = document.createElement('span');
-        suit.classList.add('suit'); 
+        suit.classList.add('suit');
         suit.textContent = suits[card.suit];
         element.appendChild(suit);
         // topLine.appendChild(suit);
         // element.appendChild(topLine);
 
         const doubleSuit = document.createElement('div');
-        doubleSuit.classList.add('double-suit'); 
+        doubleSuit.classList.add('double-suit');
         doubleSuit.textContent = suits[card.suit];
 
         element.appendChild(doubleSuit);
@@ -516,18 +514,19 @@
 
       function getHint() {
         // Hint logic
-        let hint = hints[Math.floor(Math.random()*hints.length)]; 
-        return hint;  
+        let hint = hints[Math.floor(Math.random()*hints.length)];
+        return hint;
+      }
+
+      function displayHint() {
+        alert(getHint());
       }
 
       const newGameButton = document.getElementById("new-game");
       newGameButton.addEventListener("click", newGame);
 
       const hintButton = document.getElementById("hint");
-      hintButton.addEventListener("click", () => {
-        alert(getHint());
-      });
-
+      hintButton.addEventListener("click", displayHint);
 
       const saveButton = document.getElementById("save");
       // Save game on button click
